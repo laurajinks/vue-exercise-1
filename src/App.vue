@@ -9,26 +9,44 @@
     <p>random: {{ randomFunc() }}</p>
     <!-- 4) Search any image on Google and output it here by binding the "src" attribute -->
     <div>
-      <img v-bind:src="url" style="width:100px;height:100px">
+      <img :src="url" style="width:100px;height:100px">
     </div>
     <!-- 5) Pre-Populate this input with your name (set the "value" attribute) -->
     <div>
-      <input v-bind:value="name" type="text">
+      <input :value="name" type="text">
     </div>
+    <hr>
     <!-- EX-2 -->
     <!-- 1) Show an alert when the Button gets clicked -->
     <div>
-      <button v-on:click="showAlert">Show Alert</button>
+      <button @click="showAlert">Show Alert</button>
     </div>
     <!-- 2) Listen to the "keydown" event and store the value in a data property (hint: event.target.value gives you the value) -->
     <div>
-      <input v-on:keydown="handleInput" type="text">
-      <p>{{ value1 }}</p>
+      <input @keydown="handleInput" type="text">
+      <p>{{ value }}</p>
     </div>
     <!-- 3) Adjust the example from 2) to only fire if the "key down" is the ENTER key -->
     <div>
-      <input v-on:keydown.enter="handleInput" type="text">
+      <input @keydown.enter="handleInput" type="text">
       <p>{{ value }}</p>
+      <!-- Use 2 way data binding to update value -->
+      <input v-model="value" type="text">
+      <p>{{ value }}</p>
+    </div>
+    <hr>
+    <!-- EX-3 -->
+    <!-- 1) Show a "result" of 'not there yet' as long as "value" is not equal to 37 - you can change "value" with the buttons. Print 'done' once you did it -->
+    <div>
+      <p>Current Value: {{ count }}</p>
+      <button @click="count += 5">Add 5</button>
+      <button @click="count += 1">Add 1</button>
+      <p>{{ result }}</p>
+    </div>
+    <!-- 2) Watch for changes in the "result" and reset the "value" after 5 seconds (hint: setTimeout(..., 5000) -->
+    <div>
+      <input type="text">
+      <p>{{ count }}</p>
     </div>
   </div>
 </template>
@@ -41,8 +59,22 @@ export default {
       name: "Laura",
       age: 28,
       url: "http://placekitten.com/g/200/200",
-      value: ""
+      value: "",
+      count: 0
     };
+  },
+  computed: {
+    result: function() {
+      return this.count > 37 ? "Greater than 37" : "Not greater than 37";
+    }
+  },
+  watch: {
+    count: function(value) {
+      const vm = this;
+      setTimeout(function() {
+        vm.count = 0;
+      }, 2000);
+    }
   },
   methods: {
     randomFunc: function() {
