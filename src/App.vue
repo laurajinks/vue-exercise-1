@@ -48,6 +48,34 @@
       <input type="text">
       <p>{{ count }}</p>
     </div>
+    <hr>
+    <!-- EX-4 -->
+    <!-- 1) Start the Effect with the Button. The Effect should alternate the "highlight" or "shrink" class on each new setInterval tick (attach respective class to the div with id "effect" below) -->
+    <div>
+      <button @click="startEffect">Start Effect</button>
+      <div id="effect" :class="effectClasses"></div>
+    </div>
+    <!-- 2) Create a couple of CSS classes and attach them via the array syntax -->
+    <div>
+      <input type="text" v-model="userClass">
+      <div v-bind:class="['visible', userClass]"></div>
+    </div>
+    <!-- 4) Let the user enter a class and enter true/ false for another class (create some example classes) and attach the classes -->
+    <div>
+      <input type="text" v-model="userClass">
+      <input type="text" v-model="visible">
+      <div :class="[{visible: visible}, userClass]"></div>
+    </div>
+    <!-- 5) Repeat 3) but now with values for styles (instead of class names). Attach the respective styles.  -->
+    <div>
+      <input type="text" v-model="myStyle.backgroundColor">
+      <div :style="myStyle"></div>
+    </div>
+    <!-- 6) Create a simple progress bar with setInterval and style bindings. Start it by hitting the below button. -->
+    <div>
+      <button @click="startProgress">Start Progress</button>
+      <div :class="['progressBar']" :style="progressBar"></div>
+    </div>
   </div>
 </template>
 
@@ -60,7 +88,22 @@ export default {
       age: 28,
       url: "http://placekitten.com/g/200/200",
       value: "",
-      count: 0
+      count: 0,
+      effectClasses: {
+        highlight: false,
+        shrink: true
+      },
+      userClass: "",
+      visible: false,
+      myStyle: {
+        width: "100px",
+        height: "150px",
+        backgroundColor: "gray"
+      },
+      progressBar: {
+        width: "0px",
+        backgroundColor: "purple"
+      }
     };
   },
   computed: {
@@ -69,7 +112,7 @@ export default {
     }
   },
   watch: {
-    count: function(value) {
+    count: function() {
       const vm = this;
       setTimeout(function() {
         vm.count = 0;
@@ -85,6 +128,21 @@ export default {
     },
     handleInput: function() {
       this.value = event.target.value;
+    },
+    startEffect: function() {
+      const vm = this;
+      setInterval(function() {
+        vm.effectClasses.highlight = !vm.effectClasses.highlight;
+        vm.effectClasses.shrink = !vm.effectClasses.shrink;
+      }, 2000);
+    },
+    startProgress: function() {
+      const vm = this;
+      var width = 0;
+      setInterval(function() {
+        width = width + 10;
+        vm.progressBar.width = width + "px";
+      }, 300);
     }
   }
 };
@@ -98,5 +156,48 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+#effect {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+}
+
+.highlight {
+  background-color: red;
+  width: 200px !important;
+}
+
+.shrink {
+  background-color: gray;
+  width: 50px !important;
+}
+
+.blue {
+  background: blue;
+}
+
+.visible {
+  width: 100px;
+  height: 100px;
+}
+
+.fontSize {
+  font-size: 40px;
+}
+
+.example {
+  background: gray;
+  border: 1px solid hotpink;
+  width: 30px;
+  height: 30px;
+}
+
+.progressBar {
+  /* background: purple; */
+  height: 30px;
+  width: 200px;
+  border: 1px solid black;
 }
 </style>
