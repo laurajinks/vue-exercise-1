@@ -76,6 +76,34 @@
       <button @click="startProgress">Start Progress</button>
       <div :class="['progressBar']" :style="progressBar"></div>
     </div>
+    <hr>
+    <div id="exercise">
+      <!-- 1) Hook up the button to toggle the display of the two paragraphs. Use both v-if and v-show and inspect the elements to see the difference -->
+      <div>
+        <button @click="toggleParagraph">Toggle</button>
+        <p v-if="showParagraph">You either see me ...</p>
+        <p v-else>...or me</p>
+        <p v-show="showParagraph">You either see me ...</p>
+        <p v-show="!showParagraph">...or me</p>
+      </div>
+      <!-- 2) Output an <ul> of array elements of your choice. Also print the index of each element. -->
+      <ul>
+        <li v-for="(name, i) in array" :key="i">{{ name }} {{ i }}</li>
+      </ul>
+      <!-- 3) Print all key-value pairs of the following object: {title: 'Lord of the Rings', author: 'J.R.R. Tolkiens', books: '3'}. Also print the index of each item. -->
+      <ul>
+        <li v-for="(value, key) in myObject" :key="key">{{ key }}: {{ value }}</li>
+      </ul>
+      <!-- 4) Print the following object (only the values) and also create a nested loop for the array: {name: 'TESTOBJECT', data: [1.67, 1.33, 0.98, 2.21]} (hint: use v-for and v-if to achieve this) -->
+      <ul>
+        <li v-for="value in testData" :key="value">
+          <template v-if="Array.isArray(value)">
+            <div v-for="element in value" :key="element">{{element}}</div>
+          </template>
+          <template v-else>{{value}}</template>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -103,7 +131,19 @@ export default {
       progressBar: {
         width: "0px",
         backgroundColor: "purple"
-      }
+      },
+      array: ["Max", "Anna", "Chris", "Manu"],
+      myObject: {
+        title: "Lord of the Rings",
+        author: "J.R.R. Tolkiens",
+        books: "3"
+      },
+      testData: {
+        name: "TESTOBJECT",
+        id: 10,
+        data: [1.67, 1.33, 0.98, 2.21]
+      },
+      showParagraph: true
     };
   },
   computed: {
@@ -143,6 +183,9 @@ export default {
         width = width + 10;
         vm.progressBar.width = width + "px";
       }, 300);
+    },
+    toggleParagraph: function() {
+      this.showParagraph = !this.showParagraph;
     }
   }
 };
